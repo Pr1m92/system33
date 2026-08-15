@@ -1,7 +1,7 @@
-import { registerUser, loginUser, requireUser, clearSession } from "./storage.js?v=4";
-import { renderRing, renderTopbar, renderInsight } from "./dashboard.js?v=4";
-import { renderCycleView, bindEditor } from "./cycle.js?v=4";
-import { runReveal, startAmbient, pulseRingNodes } from "./motion.js?v=4";
+import { registerUser, loginUser, requireUser, clearSession } from "./storage.js?v=5";
+import { renderRing, renderTopbar, renderInsight, renderAnalytics } from "./dashboard.js?v=5";
+import { renderCycleView, bindEditor } from "./cycle.js?v=5";
+import { runReveal, startAmbient, pulseRingNodes } from "./motion.js?v=5";
 
 const views = {
   auth: document.getElementById("view-auth"),
@@ -42,6 +42,7 @@ function openDashboard() {
   paintUserChips(user);
   renderTopbar(user, document.getElementById("topbar-stats"));
   renderInsight(user, document.getElementById("insight-banner"));
+  renderAnalytics(user, document.getElementById("analytics-root"));
   const svg = document.getElementById("cycle-ring");
   renderRing(user, svg, document.getElementById("ring-center"), openCycle);
   pulseRingNodes(svg);

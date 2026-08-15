@@ -17,13 +17,13 @@ export function startAmbient() {
   let h = 0;
   let raf = 0;
 
-  const particles = Array.from({ length: 42 }, () => ({
+  const particles = Array.from({ length: 64 }, () => ({
     x: Math.random(),
     y: Math.random(),
-    r: 0.6 + Math.random() * 1.8,
-    s: 0.08 + Math.random() * 0.25,
-    a: 0.15 + Math.random() * 0.35,
-    hue: Math.random() > 0.55 ? "61,214,198" : "240,163,94",
+    r: 0.7 + Math.random() * 2.2,
+    s: 0.1 + Math.random() * 0.35,
+    a: 0.18 + Math.random() * 0.4,
+    hue: Math.random() > 0.5 ? "61,214,198" : Math.random() > 0.5 ? "240,163,94" : "58,160,255",
   }));
 
   function resize() {
