@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" id="main-css" href="css/styles.css" />
+  <link rel="stylesheet" href="css/year-map.css" />
 </head>
 <body>
   <div class="bg-photo" aria-hidden="true"></div>
@@ -378,6 +379,10 @@
       var v = Date.now();
       var css = document.getElementById("main-css");
       if (css) css.href = "css/styles.css?v=" + v;
+      var y = document.createElement("link");
+      y.rel = "stylesheet";
+      y.href = "css/year-map.css?v=" + v;
+      document.head.appendChild(y);
       var s = document.createElement("script");
       s.type = "module";
       s.src = "js/app.js?v=" + v;
