@@ -1,6 +1,7 @@
-import { registerUser, loginUser, requireUser, clearSession } from "./storage.js?v=3";
-import { renderRing, renderTopbar, renderInsight } from "./dashboard.js?v=3";
-import { renderCycleView, bindEditor } from "./cycle.js?v=3";
+import { registerUser, loginUser, requireUser, clearSession } from "./storage.js?v=4";
+import { renderRing, renderTopbar, renderInsight } from "./dashboard.js?v=4";
+import { renderCycleView, bindEditor } from "./cycle.js?v=4";
+import { runReveal, startAmbient, pulseRingNodes } from "./motion.js?v=4";
 
 const views = {
   auth: document.getElementById("view-auth"),
@@ -11,9 +12,13 @@ const views = {
 const userRef = { current: null };
 let activeCycle = 0;
 
+startAmbient();
+runReveal();
+
 function show(view) {
   Object.values(views).forEach((el) => el.classList.remove("active"));
   views[view].classList.add("active");
+  requestAnimationFrame(() => runReveal(views[view]));
 }
 
 function setError(id, message) {
@@ -37,12 +42,9 @@ function openDashboard() {
   paintUserChips(user);
   renderTopbar(user, document.getElementById("topbar-stats"));
   renderInsight(user, document.getElementById("insight-banner"));
-  renderRing(
-    user,
-    document.getElementById("cycle-ring"),
-    document.getElementById("ring-center"),
-    openCycle
-  );
+  const svg = document.getElementById("cycle-ring");
+  renderRing(user, svg, document.getElementById("ring-center"), openCycle);
+  pulseRingNodes(svg);
   show("dashboard");
 }
 

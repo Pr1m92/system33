@@ -9,8 +9,8 @@ import {
   formatWr,
   calcStats,
   flattenCycle,
-} from "./calc.js?v=3";
-import { escapeHtml } from "./crypto.js?v=3";
+} from "./calc.js?v=4";
+import { escapeHtml } from "./crypto.js?v=4";
 
 function detectCurrentCycle(user) {
   for (let i = 0; i < CYCLE_COUNT; i += 1) {
@@ -132,6 +132,7 @@ export function renderRing(user, svg, centerEl, onOpenCycle) {
     <div class="center-line">${user.mmrNow} → ${user.mmrGoal} MMR</div>
     <div class="center-line muted">${user.gamesWeek} игр/нед · Δ${MMR_DELTA} · цель WR ${Math.round(IDEAL_WR * 100)}%</div>
   `;
+  centerEl.classList.add("center-pop");
 
   svg.querySelectorAll(".cycle-node").forEach((node) => {
     node.addEventListener("click", () => {

@@ -14,12 +14,50 @@
 <body>
   <div class="bg-grid" aria-hidden="true"></div>
   <div class="bg-glow" aria-hidden="true"></div>
+  <div class="bg-orbs" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </div>
+  <canvas id="fx-canvas" class="fx-canvas" aria-hidden="true"></canvas>
 
   <!-- AUTH / LANDING -->
   <section id="view-auth" class="view active">
     <div class="landing">
-      <div class="landing-copy">
-        <header class="auth-brand">
+      <div class="landing-copy reveal-scope">
+        <div class="hero-visual reveal">
+          <svg class="sigil" viewBox="0 0 320 220" role="img" aria-label="SYSTEM 33 emblem">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#3dd6c6"/>
+                <stop offset="55%" stop-color="#7af0c8"/>
+                <stop offset="100%" stop-color="#f0a35e"/>
+              </linearGradient>
+              <linearGradient id="g2" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0%" stop-color="#1a2740" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#3dd6c6" stop-opacity="0.35"/>
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <rect x="8" y="18" width="304" height="184" rx="28" fill="url(#g2)" stroke="rgba(61,214,198,0.25)"/>
+            <circle cx="160" cy="110" r="68" fill="none" stroke="rgba(148,173,210,0.2)" stroke-dasharray="4 8"/>
+            <circle cx="160" cy="110" r="52" fill="none" stroke="url(#g1)" stroke-width="2.5" filter="url(#glow)" class="sigil-ring"/>
+            <path d="M160 58 L188 110 L160 162 L132 110 Z" fill="rgba(11,18,32,0.65)" stroke="url(#g1)" stroke-width="2"/>
+            <text x="160" y="116" text-anchor="middle" fill="#e8eef8" font-family="JetBrains Mono, monospace" font-size="22" font-weight="700">33%</text>
+            <path class="sigil-spark" d="M46 70 L62 78 L46 86 Z" fill="#f0a35e" opacity="0.9"/>
+            <path class="sigil-spark" d="M274 140 L258 148 L274 156 Z" fill="#3dd6c6" opacity="0.9"/>
+            <text x="28" y="48" fill="#8fa3c1" font-family="Manrope, sans-serif" font-size="11" letter-spacing="2">PROTOCOL</text>
+            <text x="230" y="188" fill="#8fa3c1" font-family="Manrope, sans-serif" font-size="11" letter-spacing="2">GROWTH</text>
+          </svg>
+          <div class="hero-badges">
+            <span>12 циклов</span>
+            <span>66% WR цель</span>
+            <span>Δ MMR модель</span>
+          </div>
+        </div>
+
+        <header class="auth-brand reveal">
           <div class="logo-mark">33%</div>
           <div>
             <p class="brand-kicker">Dota 2 · Growth Protocol</p>
@@ -28,12 +66,12 @@
           </div>
         </header>
 
-        <blockquote class="manifesto">
+        <blockquote class="manifesto reveal">
           <p>«Победа — не случайность. Это повторяемый процесс, который можно увидеть в цифрах.»</p>
         </blockquote>
 
         <div class="principle-grid">
-          <article class="principle">
+          <article class="principle reveal">
             <span class="principle-num">01</span>
             <h3>Почему 33%</h3>
             <p>
@@ -42,7 +80,7 @@
               Тогда рейтинг растёт предсказуемо, а не на эмоциях.
             </p>
           </article>
-          <article class="principle">
+          <article class="principle reveal">
             <span class="principle-num">02</span>
             <h3>Как устроен год</h3>
             <p>
@@ -51,7 +89,7 @@
               Алгоритм делит путь от текущего MMR к цели на равные шаги и показывает потолок роста при 66% WR.
             </p>
           </article>
-          <article class="principle">
+          <article class="principle reveal">
             <span class="principle-num">03</span>
             <h3>Что ты видишь в данных</h3>
             <p>
@@ -61,7 +99,7 @@
               Плюс тип игры (A/B/C) и стабильность (+/−/=) — чтобы понимать не только «сколько», но и «как».
             </p>
           </article>
-          <article class="principle">
+          <article class="principle reveal">
             <span class="principle-num">04</span>
             <h3>Вывод системы</h3>
             <p>
@@ -72,7 +110,7 @@
           </article>
         </div>
 
-        <div class="algo-box">
+        <div class="algo-box reveal">
           <h3>Алгоритм в двух формулах</h3>
           <ul>
             <li><strong>План MMR за цикл:</strong> (цель − старт) ÷ 12</li>
@@ -84,8 +122,8 @@
         </div>
       </div>
 
-      <div class="landing-auth">
-        <div class="auth-card">
+      <div class="landing-auth reveal">
+        <div class="auth-card glass-card">
           <div class="tabs" role="tablist">
             <button type="button" class="tab active" data-tab="login" role="tab" aria-selected="true">Вход</button>
             <button type="button" class="tab" data-tab="register" role="tab" aria-selected="false">Регистрация</button>
