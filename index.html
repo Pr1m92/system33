@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <title>SYSTEM 33% — Dota 2 growth system</title>
+  <meta name="description" content="Система развития рейтинга Dota 2: 12 циклов, мини-циклы по 33 игры, контроль винрейта и стабильности." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <!-- AUTH -->
+  <section id="view-auth" class="view active">
+    <div class="auth-shell">
+      <header class="auth-brand">
+        <div class="logo-mark">33%</div>
+        <div>
+          <h1>SYSTEM 33%</h1>
+          <p>Профессиональная система роста MMR в Dota 2</p>
+        </div>
+      </header>
+
+      <div class="auth-card">
+        <div class="tabs" role="tablist">
+          <button type="button" class="tab active" data-tab="login" role="tab" aria-selected="true">Вход</button>
+          <button type="button" class="tab" data-tab="register" role="tab" aria-selected="false">Регистрация</button>
+        </div>
+
+        <form id="form-login" class="auth-form" autocomplete="on">
+          <label>
+            <span>Ник</span>
+            <input id="login-nick" name="username" type="text" maxlength="32" required autocomplete="username" />
+          </label>
+          <label>
+            <span>Пароль</span>
+            <input id="login-pass" name="password" type="password" minlength="6" required autocomplete="current-password" />
+          </label>
+          <p class="form-error" id="login-error" hidden></p>
+          <button type="submit" class="btn btn-primary">Войти в систему</button>
+        </form>
+
+        <form id="form-register" class="auth-form" hidden autocomplete="on">
+          <label>
+            <span>Ник</span>
+            <input id="reg-nick" name="username" type="text" maxlength="32" required autocomplete="username" />
+          </label>
+          <label>
+            <span>Пароль</span>
+            <input id="reg-pass" name="password" type="password" minlength="6" required autocomplete="new-password" />
+          </label>
+          <div class="form-row">
+            <label>
+              <span>Текущий MMR</span>
+              <input id="reg-mmr-now" type="number" min="0" max="20000" required />
+            </label>
+            <label>
+              <span>Цель MMR через год</span>
+              <input id="reg-mmr-goal" type="number" min="0" max="20000" required />
+            </label>
+          </div>
+          <label>
+            <span>Игр в неделю (примерно)</span>
+            <input id="reg-games-week" type="number" min="1" max="200" required />
+          </label>
+          <p class="form-hint">Система построит 12 циклов по 99 игр и рассчитает плановый и максимальный MMR.</p>
+          <p class="form-error" id="reg-error" hidden></p>
+          <button type="submit" class="btn btn-primary">Создать профиль</button>
+        </form>
+      </div>
+
+      <p class="auth-footnote">Прототип · данные хранятся локально в браузере (хешированный пароль + сессия)</p>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="view-dashboard" class="view">
+    <header class="app-topbar">
+      <div class="brand-inline">
+        <span class="logo-mark sm">33%</span>
+        <strong>SYSTEM 33%</strong>
+      </div>
+      <div class="topbar-stats" id="topbar-stats"></div>
+      <div class="topbar-actions">
+        <span class="user-chip" id="user-chip"></span>
+        <button type="button" class="btn btn-ghost" id="btn-logout">Выйти</button>
+      </div>
+    </header>
+
+    <main class="dash-main">
+      <section class="panel plan-panel">
+        <div class="panel-head">
+          <div>
+            <h2>Годовой контур</h2>
+            <p>12 циклов · 99 игр · путь к цели и потолок системы 66% WR</p>
+          </div>
+          <div class="legend">
+            <span><i class="dot past"></i> пройден</span>
+            <span><i class="dot current"></i> текущий</span>
+            <span><i class="dot future"></i> план</span>
+          </div>
+        </div>
+        <div class="ring-wrap">
+          <svg id="cycle-ring" class="cycle-ring" viewBox="0 0 900 900" role="img" aria-label="12 циклов по кругу"></svg>
+          <div class="ring-center" id="ring-center"></div>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <!-- CYCLE DETAIL -->
+  <section id="view-cycle" class="view">
+    <header class="app-topbar">
+      <div class="brand-inline">
+        <button type="button" class="btn btn-ghost" id="btn-back">← К контуру</button>
+        <strong id="cycle-title">Цикл</strong>
+      </div>
+      <div class="topbar-stats" id="cycle-top-stats"></div>
+      <div class="topbar-actions">
+        <span class="user-chip" id="user-chip-cycle"></span>
+        <button type="button" class="btn btn-ghost" id="btn-logout-2">Выйти</button>
+      </div>
+    </header>
+
+    <main class="cycle-main" id="cycle-main"></main>
+  </section>
+
+  <!-- CELL EDITOR MODAL -->
+  <div id="editor" class="modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="editor-title">
+      <h3 id="editor-title">Игра</h3>
+      <p class="modal-sub" id="editor-sub"></p>
+
+      <div class="editor-block">
+        <span class="editor-label">Тип игры</span>
+        <div class="chip-row" id="edit-type">
+          <button type="button" data-type="A">A</button>
+          <button type="button" data-type="B">B</button>
+          <button type="button" data-type="C">C</button>
+        </div>
+      </div>
+
+      <div class="editor-block">
+        <span class="editor-label">Стабильность (3 маркера)</span>
+        <div class="stab-grid" id="edit-stab">
+          <div class="chip-row" data-slot="0">
+            <button type="button" data-stab="+">+</button>
+            <button type="button" data-stab="-">−</button>
+            <button type="button" data-stab="=">=</button>
+          </div>
+          <div class="chip-row" data-slot="1">
+            <button type="button" data-stab="+">+</button>
+            <button type="button" data-stab="-">−</button>
+            <button type="button" data-stab="=">=</button>
+          </div>
+          <div class="chip-row" data-slot="2">
+            <button type="button" data-stab="+">+</button>
+            <button type="button" data-stab="-">−</button>
+            <button type="button" data-stab="=">=</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor-block">
+        <span class="editor-label">Результат</span>
+        <div class="chip-row result-row" id="edit-result">
+          <button type="button" class="res-win" data-result="win">Победа</button>
+          <button type="button" class="res-chance" data-result="chance">Поражение с шансом</button>
+          <button type="button" class="res-loss" data-result="loss">Поражение без шансов</button>
+          <button type="button" data-result="">Сбросить</button>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close>Отмена</button>
+        <button type="button" class="btn btn-primary" id="editor-save">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
