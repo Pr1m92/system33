@@ -148,6 +148,10 @@ body {
   gap: 14px;
 }
 
+.auth-form[hidden] {
+  display: none !important;
+}
+
 .auth-form label {
   display: grid;
   gap: 6px;
