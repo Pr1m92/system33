@@ -5,9 +5,9 @@ import {
   monthLabel,
   GAMES_PER_MINI,
   MINIS_PER_CYCLE,
-} from "./calc.js?v=2";
-import { escapeHtml } from "./crypto.js?v=2";
-import { saveUser } from "./storage.js?v=2";
+} from "./calc.js?v=3";
+import { escapeHtml } from "./crypto.js?v=3";
+import { saveUser } from "./storage.js?v=3";
 
 let editorState = null;
 
@@ -106,7 +106,12 @@ export function renderCycleView(user, cycleIndex, root, openEditor) {
       <div>
         <p class="eyebrow">Цикл ${cycleIndex + 1} из 12</p>
         <h2>${escapeHtml(month)}</h2>
-        <p>3 мини-цикла × 33 игры. Клик по колонке — заполнить тип, стабильность и результат.</p>
+        <p>3 мини-цикла × 33 игры. Заполняй матчи честно: цвет результата, тип A/B/C и стабильность (+/−/=).</p>
+        <p class="cycle-tip">
+          <strong>Как читать кружки:</strong> WR — фактический винрейт,
+          Chance — поражения с шансом,
+          Pot. — винрейт, если дожать голубые игры до побед.
+        </p>
       </div>
       <div class="cycle-summary">
         ${orbsHtml(totalStats, "lg")}

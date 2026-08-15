@@ -90,6 +90,222 @@ body {
   padding: 48px 20px 64px;
 }
 
+.landing {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 36px 20px 64px;
+  display: grid;
+  grid-template-columns: 1.35fr 0.9fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.landing-auth {
+  position: sticky;
+  top: 24px;
+}
+
+.brand-kicker {
+  margin: 0 0 6px;
+  color: var(--brand);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.brand-lead {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  max-width: 36rem;
+}
+
+.manifesto {
+  margin: 22px 0;
+  padding: 16px 18px;
+  border-left: 3px solid var(--brand-2);
+  background: rgba(240, 163, 94, 0.08);
+  border-radius: 0 14px 14px 0;
+}
+
+.manifesto p {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: #f3e2cc;
+}
+
+.principle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.principle {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.principle-num {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--brand);
+  margin-bottom: 8px;
+}
+
+.principle h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.principle p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.principle strong {
+  color: var(--text);
+}
+
+.algo-box {
+  background: linear-gradient(180deg, rgba(61, 214, 198, 0.08), rgba(18, 28, 46, 0.5));
+  border: 1px solid rgba(61, 214, 198, 0.25);
+  border-radius: 16px;
+  padding: 16px 18px;
+}
+
+.algo-box h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.algo-box ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  display: grid;
+  gap: 6px;
+}
+
+.algo-box strong {
+  color: var(--text);
+  font-family: var(--mono);
+  font-weight: 600;
+}
+
+.algo-note {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.insight-banner {
+  margin-bottom: 16px;
+  border-color: rgba(61, 214, 198, 0.28);
+}
+
+.insight-banner.tone-warn {
+  border-color: rgba(228, 87, 87, 0.4);
+  background: linear-gradient(90deg, rgba(228, 87, 87, 0.12), var(--panel));
+}
+
+.insight-banner.tone-focus {
+  border-color: rgba(58, 160, 255, 0.4);
+  background: linear-gradient(90deg, rgba(58, 160, 255, 0.12), var(--panel));
+}
+
+.insight-banner.tone-good {
+  border-color: rgba(47, 206, 124, 0.45);
+  background: linear-gradient(90deg, rgba(47, 206, 124, 0.12), var(--panel));
+}
+
+.insight-banner.tone-start {
+  border-color: rgba(240, 163, 94, 0.4);
+  background: linear-gradient(90deg, rgba(240, 163, 94, 0.12), var(--panel));
+}
+
+.insight-kicker {
+  color: var(--brand);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.insight-text {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.insight-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.insight-meta strong {
+  color: var(--text);
+  font-family: var(--mono);
+}
+
+.method-dash {
+  margin-top: 16px;
+}
+
+.method-dash-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.method-dash h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.method-dash p {
+  margin: 0 0 10px;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 0.92rem;
+}
+
+.method-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  display: grid;
+  gap: 8px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.method-list strong {
+  color: var(--text);
+}
+
+.cycle-tip {
+  margin-top: 10px !important;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(61, 214, 198, 0.08);
+  border: 1px solid rgba(61, 214, 198, 0.2);
+  color: #c9ebe5 !important;
+  font-size: 0.9rem !important;
+}
+
 .auth-brand {
   display: flex;
   gap: 16px;
@@ -707,6 +923,19 @@ body {
 }
 
 @media (max-width: 1100px) {
+  .landing {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-auth {
+    position: static;
+  }
+
+  .principle-grid,
+  .method-dash-grid {
+    grid-template-columns: 1fr;
+  }
+
   .mini-layout {
     grid-template-columns: 1fr;
   }

@@ -1,6 +1,6 @@
-import { registerUser, loginUser, requireUser, clearSession } from "./storage.js?v=2";
-import { renderRing, renderTopbar } from "./dashboard.js?v=2";
-import { renderCycleView, bindEditor } from "./cycle.js?v=2";
+import { registerUser, loginUser, requireUser, clearSession } from "./storage.js?v=3";
+import { renderRing, renderTopbar, renderInsight } from "./dashboard.js?v=3";
+import { renderCycleView, bindEditor } from "./cycle.js?v=3";
 
 const views = {
   auth: document.getElementById("view-auth"),
@@ -36,6 +36,7 @@ function openDashboard() {
   const user = userRef.current;
   paintUserChips(user);
   renderTopbar(user, document.getElementById("topbar-stats"));
+  renderInsight(user, document.getElementById("insight-banner"));
   renderRing(
     user,
     document.getElementById("cycle-ring"),

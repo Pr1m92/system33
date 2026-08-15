@@ -9,8 +9,8 @@ import {
   formatWr,
   calcStats,
   flattenCycle,
-} from "./calc.js?v=2";
-import { escapeHtml } from "./crypto.js?v=2";
+} from "./calc.js?v=3";
+import { escapeHtml } from "./crypto.js?v=3";
 
 function detectCurrentCycle(user) {
   for (let i = 0; i < CYCLE_COUNT; i += 1) {
@@ -18,6 +18,45 @@ function detectCurrentCycle(user) {
     if (stats.played < GAMES_PER_CYCLE) return i;
   }
   return CYCLE_COUNT - 1;
+}
+
+export function renderInsight(user, el) {
+  if (!el) return;
+  const currentIdx = detectCurrentCycle(user);
+  const plan = buildYearPlan(user.mmrNow, user.mmrGoal);
+  const stats = calcStats(flattenCycle(user.cycles[currentIdx]));
+  const month = monthLabel(user.createdAt, currentIdx);
+  const gap = user.mmrGoal - user.mmrNow;
+  const maxYear = expectedMmrGain(GAMES_PER_CYCLE * CYCLE_COUNT, IDEAL_WR);
+
+  let verdict;
+  let tone = "neutral";
+
+  if (stats.played === 0) {
+    verdict = `Цикл ${currentIdx + 1} (${month}) ещё пуст. Начни дневник игр — система покажет, где ты теряешь MMR и где уже близко к победе.`;
+    tone = "start";
+  } else if (stats.currentWr != null && stats.currentWr < 50) {
+    verdict = `Текущий WR ${formatWr(stats.currentWr)}. Сейчас важнее качество решений, чем объём. Разбери красные игры и типы A/B/C — цель ${user.mmrGoal} достижима только через стабильность.`;
+    tone = "warn";
+  } else if (stats.currentWr != null && stats.currentWr < 66) {
+    const pot = formatWr(stats.potentialWr);
+    verdict = `Рабочая зона роста: WR ${formatWr(stats.currentWr)}, потенциал ${pot}. Закрывай «голубые» поражения — это самый быстрый путь к режиму 66%.`;
+    tone = "focus";
+  } else {
+    verdict = `Режим SYSTEM 33% выполнен: WR ${formatWr(stats.currentWr)}. Держи дисциплину мини-циклов и не отпускай стабильность — так цель +${gap} MMR становится вопросом времени.`;
+    tone = "good";
+  }
+
+  el.className = `insight-banner panel tone-${tone}`;
+  el.innerHTML = `
+    <div class="insight-kicker">Вывод системы · цикл ${currentIdx + 1}/12</div>
+    <p class="insight-text">${verdict}</p>
+    <div class="insight-meta">
+      <span>План шага: <strong>+${plan[currentIdx].gainPlan} MMR</strong></span>
+      <span>Потолок года @66%: <strong>+${maxYear} MMR</strong></span>
+      <span>Игр в цикле: <strong>${stats.played}/${GAMES_PER_CYCLE}</strong></span>
+    </div>
+  `;
 }
 
 export function renderTopbar(user, el) {

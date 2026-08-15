@@ -15,66 +15,125 @@
   <div class="bg-grid" aria-hidden="true"></div>
   <div class="bg-glow" aria-hidden="true"></div>
 
-  <!-- AUTH -->
+  <!-- AUTH / LANDING -->
   <section id="view-auth" class="view active">
-    <div class="auth-shell">
-      <header class="auth-brand">
-        <div class="logo-mark">33%</div>
-        <div>
-          <h1>SYSTEM 33%</h1>
-          <p>Профессиональная система роста MMR в Dota 2</p>
-        </div>
-      </header>
-
-      <div class="auth-card">
-        <div class="tabs" role="tablist">
-          <button type="button" class="tab active" data-tab="login" role="tab" aria-selected="true">Вход</button>
-          <button type="button" class="tab" data-tab="register" role="tab" aria-selected="false">Регистрация</button>
-        </div>
-
-        <form id="form-login" class="auth-form" autocomplete="on">
-          <label>
-            <span>Ник</span>
-            <input id="login-nick" name="username" type="text" maxlength="32" required autocomplete="username" />
-          </label>
-          <label>
-            <span>Пароль</span>
-            <input id="login-pass" name="password" type="password" minlength="6" required autocomplete="current-password" />
-          </label>
-          <p class="form-error" id="login-error" hidden></p>
-          <button type="submit" class="btn btn-primary">Войти в систему</button>
-        </form>
-
-        <form id="form-register" class="auth-form" hidden autocomplete="on">
-          <label>
-            <span>Ник</span>
-            <input id="reg-nick" name="username" type="text" maxlength="32" required autocomplete="username" />
-          </label>
-          <label>
-            <span>Пароль</span>
-            <input id="reg-pass" name="password" type="password" minlength="6" required autocomplete="new-password" />
-          </label>
-          <div class="form-row">
-            <label>
-              <span>Текущий MMR</span>
-              <input id="reg-mmr-now" type="number" min="0" max="20000" required />
-            </label>
-            <label>
-              <span>Цель MMR через год</span>
-              <input id="reg-mmr-goal" type="number" min="0" max="20000" required />
-            </label>
+    <div class="landing">
+      <div class="landing-copy">
+        <header class="auth-brand">
+          <div class="logo-mark">33%</div>
+          <div>
+            <p class="brand-kicker">Dota 2 · Growth Protocol</p>
+            <h1>SYSTEM 33%</h1>
+            <p class="brand-lead">Не просто трекер игр. Это дисциплина роста: измеряй, корректируй, доходи до цели.</p>
           </div>
-          <label>
-            <span>Игр в неделю (примерно)</span>
-            <input id="reg-games-week" type="number" min="1" max="200" required />
-          </label>
-          <p class="form-hint">Система построит 12 циклов по 99 игр и рассчитает плановый и максимальный MMR.</p>
-          <p class="form-error" id="reg-error" hidden></p>
-          <button type="submit" class="btn btn-primary">Создать профиль</button>
-        </form>
+        </header>
+
+        <blockquote class="manifesto">
+          <p>«Победа — не случайность. Это повторяемый процесс, который можно увидеть в цифрах.»</p>
+        </blockquote>
+
+        <div class="principle-grid">
+          <article class="principle">
+            <span class="principle-num">01</span>
+            <h3>Почему 33%</h3>
+            <p>
+              Система названа по допустимой доле «чистых» поражений.
+              Ориентир идеальной игры — <strong>66% винрейт</strong>: две победы на одно поражение.
+              Тогда рейтинг растёт предсказуемо, а не на эмоциях.
+            </p>
+          </article>
+          <article class="principle">
+            <span class="principle-num">02</span>
+            <h3>Как устроен год</h3>
+            <p>
+              <strong>12 циклов</strong> = 12 месяцев.
+              Каждый цикл — <strong>99 игр</strong> (3 мини-цикла × 33).
+              Алгоритм делит путь от текущего MMR к цели на равные шаги и показывает потолок роста при 66% WR.
+            </p>
+          </article>
+          <article class="principle">
+            <span class="principle-num">03</span>
+            <h3>Что ты видишь в данных</h3>
+            <p>
+              <strong>Зелёный</strong> — победа.
+              <strong>Голубой</strong> — поражение, где был шанс.
+              <strong>Красный</strong> — поражение без шансов.
+              Плюс тип игры (A/B/C) и стабильность (+/−/=) — чтобы понимать не только «сколько», но и «как».
+            </p>
+          </article>
+          <article class="principle">
+            <span class="principle-num">04</span>
+            <h3>Вывод системы</h3>
+            <p>
+              Текущий WR показывает реальность.
+              Возможный WR — потенциал, если закрывать «голубые» игры.
+              Разница между ними — зона роста, над которой стоит работать прямо сейчас.
+            </p>
+          </article>
+        </div>
+
+        <div class="algo-box">
+          <h3>Алгоритм в двух формулах</h3>
+          <ul>
+            <li><strong>План MMR за цикл:</strong> (цель − старт) ÷ 12</li>
+            <li><strong>Максимум при 66% WR:</strong> игр × (2×0.66 − 1) × ΔMMR</li>
+            <li><strong>Текущий WR:</strong> победы ÷ сыгранные игры</li>
+            <li><strong>Возможный WR:</strong> (победы + поражения с шансом) ÷ сыгранные</li>
+          </ul>
+          <p class="algo-note">ΔMMR в прототипе = 25. Это модель планирования, а не замена in-game rating.</p>
+        </div>
       </div>
 
-      <p class="auth-footnote">Прототип · данные хранятся локально в браузере (хешированный пароль + сессия)</p>
+      <div class="landing-auth">
+        <div class="auth-card">
+          <div class="tabs" role="tablist">
+            <button type="button" class="tab active" data-tab="login" role="tab" aria-selected="true">Вход</button>
+            <button type="button" class="tab" data-tab="register" role="tab" aria-selected="false">Регистрация</button>
+          </div>
+
+          <form id="form-login" class="auth-form" autocomplete="on">
+            <label>
+              <span>Ник</span>
+              <input id="login-nick" name="username" type="text" maxlength="32" required autocomplete="username" />
+            </label>
+            <label>
+              <span>Пароль</span>
+              <input id="login-pass" name="password" type="password" minlength="6" required autocomplete="current-password" />
+            </label>
+            <p class="form-error" id="login-error" hidden></p>
+            <button type="submit" class="btn btn-primary">Войти в систему</button>
+          </form>
+
+          <form id="form-register" class="auth-form" hidden autocomplete="on">
+            <label>
+              <span>Ник</span>
+              <input id="reg-nick" name="username" type="text" maxlength="32" required autocomplete="username" />
+            </label>
+            <label>
+              <span>Пароль</span>
+              <input id="reg-pass" name="password" type="password" minlength="6" required autocomplete="new-password" />
+            </label>
+            <div class="form-row">
+              <label>
+                <span>Текущий MMR</span>
+                <input id="reg-mmr-now" type="number" min="0" max="20000" required />
+              </label>
+              <label>
+                <span>Цель MMR через год</span>
+                <input id="reg-mmr-goal" type="number" min="0" max="20000" required />
+              </label>
+            </div>
+            <label>
+              <span>Игр в неделю (примерно)</span>
+              <input id="reg-games-week" type="number" min="1" max="200" required />
+            </label>
+            <p class="form-hint">После регистрации откроется годовой контур из 12 циклов с планом и максимальным потолком роста.</p>
+            <p class="form-error" id="reg-error" hidden></p>
+            <button type="submit" class="btn btn-primary">Начать путь роста</button>
+          </form>
+        </div>
+        <p class="auth-footnote">Прототип · пароль хранится только в виде хеша · сессия 12 часов</p>
+      </div>
     </div>
   </section>
 
@@ -93,11 +152,13 @@
     </header>
 
     <main class="dash-main">
+      <section class="insight-banner panel" id="insight-banner"></section>
+
       <section class="panel plan-panel">
         <div class="panel-head">
           <div>
             <h2>Годовой контур</h2>
-            <p>12 циклов · 99 игр · путь к цели и потолок системы 66% WR</p>
+            <p>12 циклов · 99 игр · путь к цели и потолок системы при 66% WR. Нажми на цикл, чтобы войти в дневник игр.</p>
           </div>
           <div class="legend">
             <span><i class="dot past"></i> пройден</span>
@@ -108,6 +169,40 @@
         <div class="ring-wrap">
           <svg id="cycle-ring" class="cycle-ring" viewBox="0 0 900 900" role="img" aria-label="12 циклов по кругу"></svg>
           <div class="ring-center" id="ring-center"></div>
+        </div>
+      </section>
+
+      <section class="method-dash panel">
+        <div class="method-dash-grid">
+          <div>
+            <h3>Методика SYSTEM 33%</h3>
+            <p>
+              Рост MMR — это марафон с измеримыми отрезками.
+              Каждый месяц ты видишь не абстрактную «надежду», а конкретный плановый шаг и максимальный потолок при идеальной реализации системы.
+            </p>
+            <p>
+              Мини-цикл из 33 игр достаточно короткий, чтобы быстро получить обратную связь,
+              и достаточно длинный, чтобы шум одной серии не исказил картину.
+            </p>
+          </div>
+          <div>
+            <h3>Как читать прогресс</h3>
+            <ul class="method-list">
+              <li><strong>Ниже 50% WR</strong> — сначала стабильность и качество решений, не объём игр.</li>
+              <li><strong>50–66% WR</strong> — рабочая зона роста. Держи темп и закрывай «голубые» поражения.</li>
+              <li><strong>66%+ WR</strong> — режим системы выполнен. Можно повышать сложность и цели.</li>
+              <li><strong>Большой разрыв WR / Potential</strong> — ты уже близко к победам, которых не дожимаешь.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Правила дисциплины</h3>
+            <ul class="method-list">
+              <li>Заполняй каждую игру сразу после матча.</li>
+              <li>Не гонись за количеством, если текущий WR проседает.</li>
+              <li>Смотри типы A/B/C: где ты выигрываешь, а где отдаёшь MMR.</li>
+              <li>Стабильность (+/−/=) показывает, насколько ровная твоя форма внутри серии.</li>
+            </ul>
+          </div>
         </div>
       </section>
     </main>
