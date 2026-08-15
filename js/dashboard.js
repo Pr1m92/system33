@@ -9,8 +9,8 @@ import {
   formatWr,
   calcStats,
   flattenCycle,
-} from "./calc.js";
-import { escapeHtml } from "./crypto.js";
+} from "./calc.js?v=2";
+import { escapeHtml } from "./crypto.js?v=2";
 
 function detectCurrentCycle(user) {
   for (let i = 0; i < CYCLE_COUNT; i += 1) {

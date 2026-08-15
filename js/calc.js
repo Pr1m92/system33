@@ -18,7 +18,7 @@
  * @property {number} mmrGoal
  * @property {number} gamesWeek
  * @property {string} createdAt
- * @property {Game[][][]} cycles  // [12][3][33]
+ * @property {Game[][][]} cycles
  */
 
 export const GAMES_PER_MINI = 33;
@@ -26,7 +26,7 @@ export const MINIS_PER_CYCLE = 3;
 export const CYCLE_COUNT = 12;
 export const GAMES_PER_CYCLE = GAMES_PER_MINI * MINIS_PER_CYCLE;
 export const IDEAL_WR = 0.66;
-/** Средний swing MMR за игру (победа +Δ / поражение −Δ). Для планирования. */
+/** Средний swing MMR за игру (победа +Δ / поражение −Δ). */
 export const MMR_DELTA = 25;
 
 const MONTHS = [
@@ -56,8 +56,8 @@ export function monthLabel(startIso, cycleIndex) {
 
 /** Ожидаемый прирост MMR за N игр при винрейте wr */
 export function expectedMmrGain(gamesCount, wr, delta = MMR_DELTA) {
-  // E[Δ] = (2p - 1) * delta
-  return Math.round(gameCount * (2 * wr - 1) * delta);
+  const n = Number(gamesCount) || 0;
+  return Math.round(n * (2 * wr - 1) * delta);
 }
 
 export function buildYearPlan(mmrNow, mmrGoal) {
@@ -82,9 +82,10 @@ export function buildYearPlan(mmrNow, mmrGoal) {
 
 /**
  * Статистика по набору игр (мини-цикл или весь цикл)
- * @param {Game[]} games
+ * @param {Game[]} gamesList
  */
-export function calcStats(games) {
+export function calcStats(gamesList = []) {
+  const list = Array.isArray(gamesList) ? gamesList : [];
   let win = 0;
   let chance = 0;
   let loss = 0;
@@ -95,7 +96,8 @@ export function calcStats(games) {
   };
   const stab = { "+": 0, "-": 0, "=": 0 };
 
-  for (const g of games) {
+  for (const g of list) {
+    if (!g) continue;
     if (g.result === "win") win += 1;
     else if (g.result === "chance") chance += 1;
     else if (g.result === "loss") loss += 1;
@@ -105,14 +107,13 @@ export function calcStats(games) {
       else byType[g.type].loss += 1;
     }
 
-    for (const s of g.stab) {
+    for (const s of g.stab || []) {
       if (s === "+" || s === "-" || s === "=") stab[s] += 1;
     }
   }
 
   const played = win + chance + loss;
   const currentWr = played ? (win / played) * 100 : null;
-  // Возможный WR: если все «голубые» обратить в победы
   const potentialWr = played ? ((win + chance) / played) * 100 : null;
 
   return {

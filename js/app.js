@@ -1,6 +1,6 @@
-import { registerUser, loginUser, requireUser, clearSession } from "./storage.js";
-import { renderRing, renderTopbar } from "./dashboard.js";
-import { renderCycleView, bindEditor } from "./cycle.js";
+import { registerUser, loginUser, requireUser, clearSession } from "./storage.js?v=2";
+import { renderRing, renderTopbar } from "./dashboard.js?v=2";
+import { renderCycleView, bindEditor } from "./cycle.js?v=2";
 
 const views = {
   auth: document.getElementById("view-auth"),
