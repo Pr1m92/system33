@@ -65,7 +65,7 @@ export async function registerUser({ nick, password, mmrNow, mmrGoal, gamesWeek 
   const clean = nick.trim();
   if (clean.length < 2) throw new Error("Ник слишком короткий");
   if (password.length < 6) throw new Error("Пароль минимум 6 символов");
-  if (mmrGoal <= mmrNow) throw new Error("Цель MMR должна быть выше текущего");
+  if (mmrGoal <= mmrNow) throw new Error("Цель рейтинга должна быть выше текущего");
   if (getUser(clean)) throw new Error("Такой ник уже зарегистрирован");
 
   const salt = randomSalt();

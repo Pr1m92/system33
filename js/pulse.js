@@ -6,7 +6,7 @@ import {
   GAMES_PER_CYCLE,
   CYCLE_COUNT,
   IDEAL_WR,
-} from "./calc.js?v=6";
+} from "./calc.js?v=7";
 
 function detectCurrentCycle(user) {
   for (let i = 0; i < CYCLE_COUNT; i += 1) {
@@ -22,7 +22,7 @@ function recentResults(user, limit = 24) {
   return games.slice(-limit);
 }
 
-/** Оригинальная метрика SYSTEM 33%: сколько побед «оставлено на столе». */
+/** Зазор дожима: победы, «оставленныe на столе». */
 export function clutchGap(stats) {
   if (!stats.played) {
     return { points: 0, recoverable: 0, label: "нет данных" };
@@ -30,14 +30,13 @@ export function clutchGap(stats) {
   const points = Math.max(0, (stats.potentialWr || 0) - (stats.currentWr || 0));
   const recoverable = stats.chance;
   let label = "спокойно";
-  if (points >= 20) label = "высокий clutch-gap";
+  if (points >= 20) label = "высокий зазор";
   else if (points >= 10) label = "есть рычаг";
   else if (points > 0) label = "почти в режиме";
   else label = "режим закрыт";
   return { points, recoverable, label };
 }
 
-/** Momentum stream: не ломается как стрик, а сужается. */
 export function momentumSeries(results) {
   let width = 0.55;
   return results.map((g) => {
@@ -59,7 +58,7 @@ export function miniSeals(cycleData) {
       done,
       mode,
       wr: stats.currentWr,
-      title: done ? (mode ? "Печать 66%" : "Печать цикла") : "Печать закрыта",
+      title: done ? (mode ? "Печать режима 66%" : "Печать закрыта") : "Печать в работе",
     };
   });
 }
@@ -73,40 +72,40 @@ export function focusCard(user) {
 
   if (stats.played === 0) {
     return {
-      code: "IGNITE",
-      title: "Фокус дня: Ignite",
+      code: "ЗАЖИГАНИЕ",
+      title: "Фокус дня: Зажигание",
       action: "Сыграй 1–3 осознанных матча и сразу заполни результат. Не целься в идеал — целься в честный старт.",
       why: "Мозгу нужен первый якорь прогресса. Пустой цикл ощущается как бесконечность.",
     };
   }
   if (stats.currentWr != null && stats.currentWr < 50) {
     return {
-      code: "STABILIZE",
-      title: "Фокус дня: Stabilize",
-      action: "Срежь объём. Разбери последние красные игры по типу A/B/C. Сегодня важнее 2 качественных матча, чем 10 на эмоциях.",
+      code: "СТАБИЛИЗАЦИЯ",
+      title: "Фокус дня: Стабилизация",
+      action: "Срежь объём. Разбери последние красные игры по типу А/Б/В. Сегодня важнее 2 качественных матча, чем 10 на эмоциях.",
       why: "Ниже 50% объём усиливает тильт. Система защищает тебя от «догоню количеством».",
     };
   }
   if (gap.recoverable >= 3) {
     return {
-      code: "CONVERT",
-      title: "Фокус дня: Convert Blue",
-      action: `У тебя ${gap.recoverable} голубых поражений. Сегодня тренируй именно дожим: драки, которые уже были близко к победе.`,
-      why: `Clutch-gap ${gap.points.toFixed(1)}% — это победы, которые система считает «оставленными на столе».`,
+      code: "ДОЖИМ",
+      title: "Фокус дня: Дожим голубых",
+      action: `У тебя ${gap.recoverable} голубых поражений. Сегодня тренируй именно дожим: ситуации, которые уже были близко к победе.`,
+      why: `Зазор дожима ${gap.points.toFixed(1)}% — победы, которые система считает оставленными на столе.`,
     };
   }
   if (openSeal) {
     return {
-      code: "SEAL",
-      title: `Фокус дня: Seal ${openSeal.index + 1}`,
+      code: "ПЕЧАТЬ",
+      title: `Фокус дня: Печать ${openSeal.index + 1}`,
       action: `Доведи мини-цикл ${openSeal.index + 1} до 33 игр. Сейчас ${openSeal.played}/33. Закрытая печать даёт ясный средний горизонт.`,
-      why: "Средняя петля (33 игры) удерживает мотивацию лучше, чем голый годовой MMR.",
+      why: "Средняя петля из 33 игр удерживает мотивацию лучше, чем голая годовая цель.",
     };
   }
   return {
-    code: "COMPOUND",
-    title: "Фокус дня: Compound",
-    action: "Режим системы близко или уже выполнен. Не ломай ритуал записи. Добавь 1 осознанный матч в слабом типе A/B/C.",
+    code: "ЗАКРЕПЛЕНИЕ",
+    title: "Фокус дня: Закрепление",
+    action: "Режим системы близко или уже выполнен. Не ломай ритуал записи. Добавь 1 осознанный матч в слабом типе А/Б/В.",
     why: "После успеха мозг хочет расслабиться. Ритуал — страховка от отката.",
   };
 }
@@ -136,15 +135,15 @@ export function renderPulse(user, el) {
       </article>
 
       <article class="pulse-card clutch-card">
-        <h3>Clutch Gap</h3>
+        <h3>Зазор дожима</h3>
         <div class="clutch-value">${gap.points.toFixed(1)}%</div>
         <p class="pulse-label">${gap.label}</p>
-        <p class="analytics-note">Разница между возможным и текущим WR. Это оригинальный рычаг SYSTEM 33%: сколько побед ещё можно «забрать» из голубых поражений (${gap.recoverable}).</p>
+        <p class="analytics-note">Разница между потенциалом и текущим процентом побед. Рычаг «Системы 33%»: сколько побед ещё можно забрать из голубых поражений (${gap.recoverable}).</p>
         <div class="clutch-meter"><i style="width:${Math.min(100, gap.points * 2.2)}%"></i></div>
       </article>
 
       <article class="pulse-card momentum-card">
-        <h3>Momentum Stream</h3>
+        <h3>Лента формы</h3>
         <p class="analytics-note">Не стыдливый стрик. Поток сужается после поражений, но не обрывается — чтобы не ломать мотивацию.</p>
         <svg class="momentum-svg" viewBox="0 0 320 86" preserveAspectRatio="none" aria-hidden="true">
           <defs>
@@ -155,7 +154,7 @@ export function renderPulse(user, el) {
           </defs>
           <path d="${path}" fill="none" stroke="url(#momGrad)" stroke-width="4" stroke-linecap="round"/>
         </svg>
-        <div class="mom-legend"><span>уже</span><span>сейчас</span></div>
+        <div class="mom-legend"><span>раньше</span><span>сейчас</span></div>
       </article>
 
       <article class="pulse-card seals-card">
@@ -171,7 +170,7 @@ export function renderPulse(user, el) {
             )
             .join("")}
         </div>
-        <p class="analytics-note">Закрытая печать = завершённый мини-цикл. Золотая кайма = WR ≥ 66% внутри печати.</p>
+        <p class="analytics-note">Закрытая печать = завершённый мини-цикл. Золотая кайма = 66%+ побед внутри печати.</p>
       </article>
     </div>
   `;

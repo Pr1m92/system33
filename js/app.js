@@ -1,8 +1,8 @@
-import { registerUser, loginUser, requireUser, clearSession } from "./storage.js?v=6";
-import { renderRing, renderTopbar, renderInsight, renderAnalytics } from "./dashboard.js?v=6";
-import { renderCycleView, bindEditor } from "./cycle.js?v=6";
-import { runReveal, startAmbient, pulseRingNodes } from "./motion.js?v=6";
-import { renderPulse } from "./pulse.js?v=6";
+import { registerUser, loginUser, requireUser, clearSession } from "./storage.js?v=7";
+import { renderRing, renderTopbar, renderInsight, renderAnalytics } from "./dashboard.js?v=7";
+import { renderCycleView, bindEditor } from "./cycle.js?v=7";
+import { runReveal, startAmbient, pulseRingNodes } from "./motion.js?v=7";
+import { renderPulse } from "./pulse.js?v=7";
 
 const views = {
   auth: document.getElementById("view-auth"),
