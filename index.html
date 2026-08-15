@@ -179,22 +179,32 @@
 
   <!-- DASHBOARD -->
   <section id="view-dashboard" class="view">
-    <header class="app-topbar">
-      <div class="brand-inline">
-        <span class="logo-mark sm">33%</span>
-        <strong>Система 33%</strong>
-      </div>
-      <div class="topbar-stats" id="topbar-stats"></div>
-      <div class="topbar-actions">
-        <span class="user-chip" id="user-chip"></span>
-        <button type="button" class="btn btn-ghost" id="btn-logout">Выйти</button>
-      </div>
-    </header>
+    <div class="dash-shell">
+      <header class="app-topbar">
+        <div class="brand-inline">
+          <span class="logo-mark sm">33%</span>
+          <strong>Система 33%</strong>
+        </div>
+        <div class="topbar-stats" id="topbar-stats"></div>
+        <div class="topbar-actions">
+          <span class="user-chip" id="user-chip"></span>
+          <button type="button" class="btn btn-ghost" id="btn-logout">Выйти</button>
+        </div>
+      </header>
+      <nav class="dash-nav" id="dash-nav" aria-label="Разделы панели">
+        <button type="button" class="dash-nav-btn" data-jump="insight-banner">Вывод</button>
+        <button type="button" class="dash-nav-btn" data-jump="section-pulse">Сутки</button>
+        <button type="button" class="dash-nav-btn" data-jump="section-analytics">Аналитика</button>
+        <button type="button" class="dash-nav-btn" data-jump="section-orbit">Орбита</button>
+        <button type="button" class="dash-nav-btn" data-jump="section-psych">Психология</button>
+        <button type="button" class="dash-nav-btn" data-jump="section-method">Методика</button>
+      </nav>
+    </div>
 
     <main class="dash-main">
       <section class="insight-banner panel" id="insight-banner"></section>
 
-      <section class="panel pulse-panel">
+      <section class="panel pulse-panel" id="section-pulse">
         <div class="panel-head">
           <div>
             <h2>Суточный контур</h2>
@@ -204,7 +214,7 @@
         <div id="pulse-root"></div>
       </section>
 
-      <section class="panel analytics-panel">
+      <section class="panel analytics-panel" id="section-analytics">
         <div class="panel-head">
           <div>
             <h2>Живая аналитика</h2>
@@ -214,11 +224,11 @@
         <div id="analytics-root"></div>
       </section>
 
-      <section class="panel plan-panel">
+      <section class="panel plan-panel" id="section-orbit">
         <div class="panel-head">
           <div>
-            <h2>Годовой контур</h2>
-            <p>12 месяцев-циклов. На карточке — план рейтинга, максимум при 66% и заполнение игр. Нажми, чтобы открыть дневник.</p>
+            <h2>Орбита года</h2>
+            <p>12 планет-циклов вокруг ядра. Созвездие маршрута: план рейтинга, максимум при 66% и заполнение игр. Нажми планету — откроется дневник.</p>
           </div>
           <div class="legend">
             <span><i class="dot past"></i> пройден</span>
@@ -232,7 +242,7 @@
         </div>
       </section>
 
-      <section class="method-dash panel psych-panel">
+      <section class="method-dash panel psych-panel" id="section-psych">
         <div class="panel-head">
           <div>
             <h2>Психология «Системы 33%»</h2>
@@ -267,7 +277,7 @@
         </div>
       </section>
 
-      <section class="method-dash panel">
+      <section class="method-dash panel" id="section-method">
         <div class="method-dash-grid">
           <div>
             <h3>Методика «Система 33%»</h3>

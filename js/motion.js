@@ -61,6 +61,14 @@ export function startAmbient() {
 export function pulseRingNodes(svg) {
   if (reduced) return;
   const wrap = svg?.parentElement;
+  const planets = wrap?.querySelectorAll(".planet");
+  if (planets?.length) {
+    planets.forEach((node, i) => {
+      node.style.setProperty("--delay", `${i * 55}ms`);
+      node.classList.add("month-enter");
+    });
+    return;
+  }
   const cards = wrap?.querySelectorAll(".month-card");
   if (cards?.length) {
     cards.forEach((node, i) => {

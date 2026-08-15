@@ -5,9 +5,9 @@ import {
   monthLabel,
   GAMES_PER_MINI,
   MINIS_PER_CYCLE,
-} from "./calc.js?v=8";
-import { escapeHtml } from "./crypto.js?v=8";
-import { saveUser } from "./storage.js?v=8";
+} from "./calc.js?v=9";
+import { escapeHtml } from "./crypto.js?v=9";
+import { saveUser } from "./storage.js?v=9";
 
 let editorState = null;
 

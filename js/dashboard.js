@@ -8,8 +8,8 @@ import {
   formatWr,
   calcStats,
   flattenCycle,
-} from "./calc.js?v=8";
-import { escapeHtml } from "./crypto.js?v=8";
+} from "./calc.js?v=9";
+import { escapeHtml } from "./crypto.js?v=9";
 
 function detectCurrentCycle(user) {
   for (let i = 0; i < CYCLE_COUNT; i += 1) {
@@ -174,55 +174,138 @@ export function renderAnalytics(user, el) {
   `;
 }
 
-/** Понятная сетка 12 месяцев вместо хрупкого SVG-круга */
+function orbitPoint(index, total, radiusPct) {
+  const angle = (index / total) * Math.PI * 2 - Math.PI / 2;
+  return {
+    x: 50 + radiusPct * Math.cos(angle),
+    y: 50 + radiusPct * Math.sin(angle),
+    angleDeg: (angle * 180) / Math.PI,
+  };
+}
+
+/** Орбита года: 12 планет-циклов вокруг ядра (HTML, без конфликтов SVG-transform) */
 export function renderRing(user, svg, centerEl, onOpenCycle) {
   const plan = buildYearPlan(user.mmrNow, user.mmrGoal);
   const currentIdx = detectCurrentCycle(user);
   const yStats = yearStats(user);
   const wrap = svg.parentElement;
+  const radius = 38;
+  const yearFill = ((currentIdx + progressPct(calcStats(flattenCycle(user.cycles[currentIdx])).played, GAMES_PER_CYCLE) / 100) / CYCLE_COUNT) * 100;
 
-  const cards = plan
+  svg.hidden = true;
+  centerEl.hidden = true;
+
+  let map = wrap.querySelector(".orbit-map");
+  if (!map) {
+    map = document.createElement("div");
+    map.className = "orbit-map";
+    wrap.appendChild(map);
+  }
+
+  const points = plan.map((_, i) => orbitPoint(i, CYCLE_COUNT, radius));
+
+  const constellationLines = points
+    .map((p, i) => {
+      const n = points[(i + 1) % points.length];
+      const active = i < currentIdx;
+      return `<line class="orbit-chord ${active ? "lit" : ""}" x1="${p.x}" y1="${p.y}" x2="${n.x}" y2="${n.y}" />`;
+    })
+    .join("");
+
+  const stars = Array.from({ length: 28 }, (_, i) => {
+    const a = (i * 137.5) % 360;
+    const r = 12 + ((i * 17) % 34);
+    const x = 50 + r * Math.cos((a * Math.PI) / 180);
+    const y = 50 + r * Math.sin((a * Math.PI) / 180);
+    const s = 0.35 + (i % 4) * 0.2;
+    return `<circle class="orbit-star" cx="${x}" cy="${y}" r="${s}" style="--d:${(i % 7) * 0.4}s" />`;
+  }).join("");
+
+  const planets = plan
+    .map((p, i) => {
+      const month = monthLabel(user.createdAt, i);
+      const stats = calcStats(flattenCycle(user.cycles[i]));
+      const state = i < currentIdx ? "past" : i === currentIdx ? "current" : "future";
+      const pct = progressPct(stats.played, GAMES_PER_CYCLE);
+      const pt = points[i];
+      const shortMonth = month.split(" ")[0];
+      return `
+        <button type="button" class="planet month-card ${state}" data-cycle="${i}"
+          style="left:${pt.x}%;top:${pt.y}%;--delay:${i * 55}ms"
+          title="Цикл ${i + 1}: ${escapeHtml(month)}">
+          <span class="planet-glow" aria-hidden="true"></span>
+          <span class="planet-core">
+            <span class="planet-num">${i + 1}</span>
+            <span class="planet-month">${escapeHtml(shortMonth)}</span>
+          </span>
+          <span class="planet-panel">
+            <span class="planet-path">${p.startPlanned} → <strong>${p.endPlanned}</strong></span>
+            <span class="planet-max">макс. ${p.endMax}</span>
+            <span class="planet-track"><i style="width:${pct}%"></i></span>
+            <span class="planet-games">${stats.played}/${GAMES_PER_CYCLE}</span>
+          </span>
+        </button>`;
+    })
+    .join("");
+
+  // Compact list for narrow screens
+  const rail = plan
     .map((p, i) => {
       const month = monthLabel(user.createdAt, i);
       const stats = calcStats(flattenCycle(user.cycles[i]));
       const state = i < currentIdx ? "past" : i === currentIdx ? "current" : "future";
       const pct = progressPct(stats.played, GAMES_PER_CYCLE);
       return `
-        <button type="button" class="month-card ${state}" data-cycle="${i}">
-          <div class="month-top">
-            <span class="month-num">${i + 1}</span>
-            <span class="month-name">${escapeHtml(month)}</span>
-          </div>
-          <div class="month-mmr">${p.startPlanned} → <strong>${p.endPlanned}</strong></div>
-          <div class="month-max">макс. ${p.endMax}</div>
-          <div class="month-track"><i style="width:${pct}%"></i></div>
-          <div class="month-games">${stats.played}/${GAMES_PER_CYCLE} игр</div>
+        <button type="button" class="orbit-rail-item ${state}" data-cycle="${i}">
+          <span class="orbit-rail-num">${i + 1}</span>
+          <span class="orbit-rail-body">
+            <strong>${escapeHtml(month)}</strong>
+            <em>${p.startPlanned} → ${p.endPlanned}</em>
+            <span class="planet-track"><i style="width:${pct}%"></i></span>
+          </span>
+          <span class="orbit-rail-games">${stats.played}/${GAMES_PER_CYCLE}</span>
         </button>`;
     })
     .join("");
 
-  // Hide broken SVG ring, render HTML map into wrap
-  svg.hidden = true;
-  centerEl.hidden = true;
-
-  let map = wrap.querySelector(".year-map");
-  if (!map) {
-    map = document.createElement("div");
-    map.className = "year-map";
-    wrap.appendChild(map);
-  }
-
   map.innerHTML = `
-    <div class="year-summary">
-      <div class="year-brand">Система 33%</div>
-      <div class="year-nick">${escapeHtml(user.nick)}</div>
-      <div class="year-path">${user.mmrNow} → ${user.mmrGoal} рейтинг</div>
-      <div class="year-meta">${user.gamesWeek} игр/нед · цель 66% побед · год: ${yStats.played} игр · ${formatWr(yStats.currentWr)}</div>
+    <div class="orbit-stage" aria-label="Орбита из 12 циклов">
+      <svg class="orbit-sky" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <defs>
+          <radialGradient id="orbitCoreGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(61,214,198,0.35)"/>
+            <stop offset="55%" stop-color="rgba(61,214,198,0.08)"/>
+            <stop offset="100%" stop-color="rgba(61,214,198,0)"/>
+          </radialGradient>
+          <linearGradient id="orbitArc" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#3dd6c6"/>
+            <stop offset="100%" stop-color="#f0a35e"/>
+          </linearGradient>
+        </defs>
+        <circle class="orbit-halo" cx="50" cy="50" r="46" fill="url(#orbitCoreGlow)"/>
+        <circle class="orbit-track-ring" cx="50" cy="50" r="${radius}" />
+        <circle class="orbit-track-ring soft" cx="50" cy="50" r="${radius - 8}" />
+        <circle class="orbit-progress" cx="50" cy="50" r="${radius}"
+          style="stroke-dasharray: ${yearFill * 2.387} ${238.7 - yearFill * 2.387}" />
+        ${constellationLines}
+        ${stars}
+      </svg>
+
+      <div class="orbit-hub">
+        <div class="orbit-hub-ring"></div>
+        <p class="year-brand">Система 33%</p>
+        <p class="year-nick">${escapeHtml(user.nick)}</p>
+        <p class="year-path">${user.mmrNow} → ${user.mmrGoal}</p>
+        <p class="year-meta">${user.gamesWeek} игр/нед · цель 66%<br/>год: ${yStats.played} · ${formatWr(yStats.currentWr)}</p>
+      </div>
+
+      ${planets}
     </div>
-    <div class="month-grid">${cards}</div>
+
+    <div class="orbit-rail" aria-label="Список циклов">${rail}</div>
   `;
 
-  map.querySelectorAll(".month-card").forEach((btn) => {
+  map.querySelectorAll("[data-cycle]").forEach((btn) => {
     btn.addEventListener("click", () => onOpenCycle(Number(btn.dataset.cycle)));
   });
 }

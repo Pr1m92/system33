@@ -1,8 +1,8 @@
-import { registerUser, loginUser, requireUser, clearSession } from "./storage.js?v=8";
-import { renderRing, renderTopbar, renderInsight, renderAnalytics } from "./dashboard.js?v=8";
-import { renderCycleView, bindEditor } from "./cycle.js?v=8";
-import { runReveal, startAmbient, pulseRingNodes } from "./motion.js?v=8";
-import { renderPulse } from "./pulse.js?v=8";
+import { registerUser, loginUser, requireUser, clearSession } from "./storage.js?v=9";
+import { renderRing, renderTopbar, renderInsight, renderAnalytics } from "./dashboard.js?v=9";
+import { renderCycleView, bindEditor } from "./cycle.js?v=9";
+import { runReveal, startAmbient, pulseRingNodes } from "./motion.js?v=9";
+import { renderPulse } from "./pulse.js?v=9";
 
 const views = {
   auth: document.getElementById("view-auth"),
@@ -15,6 +15,7 @@ let activeCycle = 0;
 
 startAmbient();
 runReveal();
+bindDashNav();
 
 function show(view) {
   Object.values(views).forEach((el) => el.classList.remove("active"));
@@ -36,6 +37,49 @@ function setError(id, message) {
 function paintUserChips(user) {
   document.getElementById("user-chip").textContent = user.nick;
   document.getElementById("user-chip-cycle").textContent = user.nick;
+}
+
+function shellOffset() {
+  const shell = document.querySelector(".dash-shell");
+  return (shell?.offsetHeight || 0) + 12;
+}
+
+function jumpToSection(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - shellOffset();
+  window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+  document.querySelectorAll(".dash-nav-btn").forEach((btn) => {
+    btn.classList.toggle("is-active", btn.dataset.jump === id);
+  });
+}
+
+function bindDashNav() {
+  const nav = document.getElementById("dash-nav");
+  if (!nav) return;
+  nav.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-jump]");
+    if (!btn) return;
+    jumpToSection(btn.dataset.jump);
+  });
+
+  const sectionIds = [...nav.querySelectorAll("[data-jump]")].map((b) => b.dataset.jump);
+  const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
+
+  const syncActive = () => {
+    if (!views.dashboard.classList.contains("active")) return;
+    const y = window.scrollY + shellOffset() + 24;
+    let current = sectionIds[0];
+    for (const el of sections) {
+      if (el.offsetTop <= y) current = el.id;
+    }
+    document.querySelectorAll(".dash-nav-btn").forEach((btn) => {
+      btn.classList.toggle("is-active", btn.dataset.jump === current);
+    });
+  };
+
+  window.addEventListener("scroll", syncActive, { passive: true });
+  syncActive();
 }
 
 function openDashboard() {
@@ -64,7 +108,6 @@ const editor = bindEditor(userRef, (cycleIndex) => {
   openCycle(cycleIndex);
 });
 
-// Tabs
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => {
     document.querySelectorAll(".tab").forEach((t) => {
@@ -119,7 +162,6 @@ document.getElementById("btn-logout").addEventListener("click", logout);
 document.getElementById("btn-logout-2").addEventListener("click", logout);
 document.getElementById("btn-back").addEventListener("click", openDashboard);
 
-// boot
 const existing = requireUser();
 if (existing) {
   userRef.current = existing;
