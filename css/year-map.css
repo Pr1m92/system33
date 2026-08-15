@@ -200,6 +200,23 @@
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
   transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
+.planet-core::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 1px solid rgba(61, 214, 198, 0.14);
+  pointer-events: none;
+}
+.planet-core::after {
+  content: "";
+  position: absolute;
+  inset: -12px -4px;
+  border-radius: 50%;
+  border: 1px dashed rgba(148, 173, 210, 0.16);
+  transform: rotate(-18deg);
+  pointer-events: none;
+}
 .planet.past .planet-core {
   border-color: rgba(61, 214, 198, 0.4);
   background:

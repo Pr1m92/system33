@@ -1,8 +1,8 @@
-import { registerUser, loginUser, requireUser, clearSession } from "./storage.js?v=9";
-import { renderRing, renderTopbar, renderInsight, renderAnalytics } from "./dashboard.js?v=9";
-import { renderCycleView, bindEditor } from "./cycle.js?v=9";
-import { runReveal, startAmbient, pulseRingNodes } from "./motion.js?v=9";
-import { renderPulse } from "./pulse.js?v=9";
+import { registerUser, loginUser, requireUser, clearSession } from "./storage.js?v=10";
+import { renderRing, renderTopbar, renderInsight, renderAnalytics } from "./dashboard.js?v=10";
+import { renderCycleView, bindEditor } from "./cycle.js?v=10";
+import { runReveal, startAmbient, pulseRingNodes } from "./motion.js?v=10";
+import { renderPulse } from "./pulse.js?v=10";
 
 const views = {
   auth: document.getElementById("view-auth"),
@@ -99,7 +99,7 @@ function openCycle(cycleIndex) {
   activeCycle = cycleIndex;
   const user = userRef.current;
   paintUserChips(user);
-  document.getElementById("cycle-title").textContent = `Цикл ${cycleIndex + 1}`;
+  document.getElementById("cycle-title").textContent = `Планета ${cycleIndex + 1}`;
   renderCycleView(user, cycleIndex, document.getElementById("cycle-main"), editor.open);
   show("cycle");
 }

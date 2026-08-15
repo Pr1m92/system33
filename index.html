@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" id="main-css" href="css/styles.css" />
   <link rel="stylesheet" href="css/year-map.css" />
+  <link rel="stylesheet" href="css/cycle-cosmos.css" />
 </head>
 <body>
   <div class="bg-photo" aria-hidden="true"></div>
@@ -317,8 +318,8 @@
   <section id="view-cycle" class="view">
     <header class="app-topbar">
       <div class="brand-inline">
-        <button type="button" class="btn btn-ghost" id="btn-back">← К контуру</button>
-        <strong id="cycle-title">Цикл</strong>
+        <button type="button" class="btn btn-ghost" id="btn-back">← К орбите</button>
+        <strong id="cycle-title">Планета</strong>
       </div>
       <div class="topbar-stats" id="cycle-top-stats"></div>
       <div class="topbar-actions">
@@ -393,6 +394,10 @@
       y.rel = "stylesheet";
       y.href = "css/year-map.css?v=" + v;
       document.head.appendChild(y);
+      var c = document.createElement("link");
+      c.rel = "stylesheet";
+      c.href = "css/cycle-cosmos.css?v=" + v;
+      document.head.appendChild(c);
       var s = document.createElement("script");
       s.type = "module";
       s.src = "js/app.js?v=" + v;
