@@ -1,4 +1,7 @@
 .year-wrap { max-width: 1100px; }
+.year-wrap [hidden],
+.cycle-ring[hidden],
+.ring-center[hidden] { display: none !important; }
 .year-map { display: grid; gap: 16px; }
 .year-summary {
   text-align: center;

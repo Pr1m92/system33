@@ -8,8 +8,8 @@ import {
   formatWr,
   calcStats,
   flattenCycle,
-} from "./calc.js?v=7";
-import { escapeHtml } from "./crypto.js?v=7";
+} from "./calc.js?v=8";
+import { escapeHtml } from "./crypto.js?v=8";
 
 function detectCurrentCycle(user) {
   for (let i = 0; i < CYCLE_COUNT; i += 1) {
@@ -101,12 +101,13 @@ export function renderAnalytics(user, el) {
   const wr = cycleStats.currentWr ?? 0;
   const pot = cycleStats.potentialWr ?? 0;
   const toIdeal = Math.max(0, 66 - wr).toFixed(1);
+  const typeRu = { A: "А", B: "Б", C: "В" };
   const bestType = ["A", "B", "C"]
     .map((t) => {
       const w = yStats.byType[t].win;
       const l = yStats.byType[t].loss;
       const n = w + l;
-      return { t, n, wr: n ? (w / n) * 100 : null };
+      return { t, label: typeRu[t], n, wr: n ? (w / n) * 100 : null };
     })
     .sort((a, b) => (b.wr ?? -1) - (a.wr ?? -1))[0];
 
@@ -147,7 +148,7 @@ export function renderAnalytics(user, el) {
             .map((t) => {
               const w = yStats.byType[t].win;
               const l = yStats.byType[t].loss;
-              return `<div class="type-chip"><em>${t}</em><span>${w}П / ${l}Пор</span></div>`;
+              return `<div class="type-chip"><em>${typeRu[t]}</em><span>${w}П / ${l}Пор</span></div>`;
             })
             .join("")}
         </div>
@@ -155,7 +156,7 @@ export function renderAnalytics(user, el) {
           ${
             bestType.wr == null
               ? "Пока мало данных по типам А/Б/В — отмечай тип в каждой игре."
-              : `Сильнее всего тип <strong>${bestType.t}</strong> (${formatWr(bestType.wr)}). Слабые типы — зона тренировки.`
+              : `Сильнее всего тип <strong>${bestType.label}</strong> (${formatWr(bestType.wr)}). Слабые типы — зона тренировки.`
           }
         </p>
       </article>

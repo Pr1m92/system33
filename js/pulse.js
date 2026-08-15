@@ -6,7 +6,7 @@ import {
   GAMES_PER_CYCLE,
   CYCLE_COUNT,
   IDEAL_WR,
-} from "./calc.js?v=7";
+} from "./calc.js?v=8";
 
 function detectCurrentCycle(user) {
   for (let i = 0; i < CYCLE_COUNT; i += 1) {

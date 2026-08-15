@@ -5,9 +5,9 @@ import {
   monthLabel,
   GAMES_PER_MINI,
   MINIS_PER_CYCLE,
-} from "./calc.js?v=7";
-import { escapeHtml } from "./crypto.js?v=7";
-import { saveUser } from "./storage.js?v=7";
+} from "./calc.js?v=8";
+import { escapeHtml } from "./crypto.js?v=8";
+import { saveUser } from "./storage.js?v=8";
 
 let editorState = null;
 
@@ -43,11 +43,11 @@ function tablesHtml(stats) {
   return `
     <div class="side-tables">
       <table class="mini-table">
-        <thead><tr><th>Тип</th><th>W</th><th>L</th></tr></thead>
+        <thead><tr><th>Тип</th><th>П</th><th>Пор</th></tr></thead>
         <tbody>
-          <tr><td>A</td><td>${stats.byType.A.win}</td><td>${stats.byType.A.loss}</td></tr>
-          <tr><td>B</td><td>${stats.byType.B.win}</td><td>${stats.byType.B.loss}</td></tr>
-          <tr><td>C</td><td>${stats.byType.C.win}</td><td>${stats.byType.C.loss}</td></tr>
+          <tr><td>А</td><td>${stats.byType.A.win}</td><td>${stats.byType.A.loss}</td></tr>
+          <tr><td>Б</td><td>${stats.byType.B.win}</td><td>${stats.byType.B.loss}</td></tr>
+          <tr><td>В</td><td>${stats.byType.C.win}</td><td>${stats.byType.C.loss}</td></tr>
         </tbody>
       </table>
       <table class="mini-table">
@@ -64,7 +64,8 @@ function tablesHtml(stats) {
 
 function gameColumnHtml(game, miniIndex, gameIndex) {
   const cls = resultClass(game.result);
-  const type = game.type || "·";
+  const typeMap = { A: "А", B: "Б", C: "В" };
+  const type = typeMap[game.type] || "·";
   const s0 = game.stab[0] || "·";
   const s1 = game.stab[1] || "·";
   const s2 = game.stab[2] || "·";

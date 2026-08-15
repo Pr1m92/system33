@@ -1,5 +1,5 @@
-import { createEmptyCycles } from "./calc.js?v=6";
-import { hashPassword, verifyPassword, randomSalt, randomToken } from "./crypto.js?v=6";
+import { createEmptyCycles } from "./calc.js?v=8";
+import { hashPassword, verifyPassword, randomSalt, randomToken } from "./crypto.js?v=8";
 
 const USERS_KEY = "system33_users_v1";
 const SESSION_KEY = "system33_session_v1";
