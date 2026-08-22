@@ -75,6 +75,80 @@
     });
   });
 
+  const projects = {
+    kitchen: {
+      kicker: "Кухня · реальный проект",
+      title: "Графит и тёплый дуб",
+      text: "Компактная кухня, где три линии фасадов спокойно дополняют друг друга. Нижний и верхний ряды выполнены из AGT, средний древесный ряд — Kronospan.",
+      details: [["Задача", "Максимум хранения на небольшой площади"], ["Материалы", "AGT · Kronospan"], ["Особенность", "Три уровня фасадов"], ["Город", "Саратов"]],
+      images: ["archive-01.jpg","archive-02.jpg","archive-03.jpg","archive-04.jpg","archive-05.jpg","archive-06.jpg","archive-07.jpg"],
+    },
+    white: {
+      kicker: "Встроенная мебель · реальный проект",
+      title: "Белая галактика",
+      text: "Два вместительных шкафа встроены в сложную нишу так, чтобы не мешать друг другу и сохранить ощущение лёгкости. Точная посадка без видимых зазоров.",
+      details: [["Задача", "Скрыть два шкафа в одной нише"], ["Фасады", "AGT 3006 Matt Galaxy White"], ["Акцент", "Ручки под золото"], ["Точность", "Посадка до миллиметра"]],
+      images: ["project-08.jpg","project-09.jpg","project-10.jpg","project-11.jpg","project-12.jpg","project-13.jpg"],
+    },
+    bathroom: {
+      kicker: "Система хранения · реальный проект",
+      title: "Идеальная ниша",
+      text: "Встроенный шкаф-пенал спрятал сложную нишу с инсталляцией и скошенными углами. Снаружи — чистая графитовая плоскость без ручек, внутри — глубокая система хранения.",
+      details: [["Задача", "Сложная геометрия санузла"], ["Корпус", "Egger Графит"], ["Фасады", "МДФ в плёнке «Скат»"], ["Фурнитура", "Firmax · push-to-open"]],
+      images: ["project-14.jpg","project-15.jpg","project-16.jpg","project-17.jpg","project-18.jpg","project-19.jpg","project-20.jpg"],
+    },
+    commercial: {
+      kicker: "Для бизнеса · реальный проект",
+      title: "«Прохук» за 14 дней",
+      text: "Спроектировали, изготовили и установили торговое оборудование для новой точки: витрины, закрытое хранение и стойку ресепшен в фирменных цветах.",
+      details: [["Срок", "14 дней от согласования"], ["Состав", "Витрины · хранение · ресепшен"], ["Формат", "Торговое оборудование"], ["Результат", "Готовая точка под открытие"]],
+      images: ["project-01.jpg","project-02.jpg","project-03.jpg","project-04.jpg","project-05.jpg","project-06.jpg","project-07.jpg"],
+    },
+  };
+  let activeProject = null;
+  let activePhoto = 0;
+
+  function showProjectPhoto(index) {
+    if (!activeProject) return;
+    const images = activeProject.images;
+    activePhoto = (index + images.length) % images.length;
+    const file = `assets/woodlife/${images[activePhoto]}`;
+    $("#project-main-image").src = file;
+    $("#project-main-image").alt = `${activeProject.title}, фотография ${activePhoto + 1}`;
+    $("#project-gallery-count").textContent = `${activePhoto + 1} / ${images.length}`;
+    $$("#project-thumbs button").forEach((button, i) => button.classList.toggle("active", i === activePhoto));
+  }
+
+  function openProject(id) {
+    activeProject = projects[id];
+    if (!activeProject) return;
+    activePhoto = 0;
+    $("#project-kicker").textContent = activeProject.kicker;
+    $("#project-modal-title").textContent = activeProject.title;
+    $("#project-modal-text").textContent = activeProject.text;
+    $("#project-modal-details").innerHTML = activeProject.details.map(([name, value]) => `<div><dt>${esc(name)}</dt><dd>${esc(value)}</dd></div>`).join("");
+    $("#project-thumbs").innerHTML = activeProject.images.map((image, index) => `<button type="button" data-photo="${index}" aria-label="Открыть фотографию ${index + 1}"><img src="assets/woodlife/${image}" alt=""></button>`).join("");
+    $$("[data-photo]", $("#project-thumbs")).forEach((button) => button.addEventListener("click", () => showProjectPhoto(Number(button.dataset.photo))));
+    showProjectPhoto(0);
+    openDialog($("#project-modal"));
+  }
+
+  $$(".project-card[data-project]").forEach((card) => {
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.addEventListener("click", () => openProject(card.dataset.project));
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openProject(card.dataset.project); }
+    });
+  });
+  $("[data-gallery-prev]").addEventListener("click", () => showProjectPhoto(activePhoto - 1));
+  $("[data-gallery-next]").addEventListener("click", () => showProjectPhoto(activePhoto + 1));
+  addEventListener("keydown", (event) => {
+    if (!$("#project-modal").open) return;
+    if (event.key === "ArrowLeft") showProjectPhoto(activePhoto - 1);
+    if (event.key === "ArrowRight") showProjectPhoto(activePhoto + 1);
+  });
+
   const materialCopy = {
     facades: "Матовые, глянцевые и древесные фактуры — стойкие к ежедневному использованию.",
     worktops: "Компакт-плита, кварц и влагостойкие поверхности под характер и нагрузку проекта.",

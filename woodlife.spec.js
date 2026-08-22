@@ -21,6 +21,13 @@ test("project filters show relevant work", async ({ page }) => {
   await page.locator('[data-filter="wardrobe"]').click();
   await expect(page.locator('.project-card:not(.hidden)')).toHaveCount(1);
   await expect(page.locator('.project-card:not(.hidden) h3')).toContainText("Белая галактика");
+  await page.locator('.project-card:not(.hidden)').click();
+  await expect(page.locator("#project-modal")).toBeVisible();
+  await expect(page.locator("#project-modal-title")).toHaveText("Белая галактика");
+  await expect(page.locator("#project-main-image")).toHaveAttribute("src", /project-08\.jpg/);
+  await page.locator("[data-gallery-next]").click();
+  await expect(page.locator("#project-main-image")).toHaveAttribute("src", /project-09\.jpg/);
+  await page.locator("#project-modal [data-close]").click();
 
   await page.locator('[data-filter="all"]').click();
   await expect(page.locator('.project-card:not(.hidden)')).toHaveCount(4);

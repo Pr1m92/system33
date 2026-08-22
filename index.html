@@ -50,9 +50,9 @@
           <a class="text-link" href="#projects">Смотреть работы <span>↓</span></a>
         </div>
         <div class="hero-facts">
-          <div><strong>7 лет</strong><span>создаём мебель</span></div>
-          <div><strong>14 дней</strong><span>от проекта до монтажа*</span></div>
-          <div><strong>0 ₽</strong><span>замер и 3D-проект</span></div>
+          <div><strong>от 7 дней</strong><span>срок производства</span></div>
+          <div><strong>14 дней</strong><span>реализованный бизнес-проект</span></div>
+          <div><strong>Бесплатно</strong><span>замер и 3D-проект</span></div>
         </div>
       </div>
 
@@ -63,7 +63,7 @@
           <span class="material-swatch"></span>
           <div><small>Материал проекта</small><strong>AGT Matt Galaxy</strong></div>
         </div>
-        <div class="hero-caption"><span>01</span><p>Кухня «Тихий графит»<br><small>Саратов · 2026</small></p></div>
+        <div class="hero-caption"><span>01</span><p>Кухня «Графит и тёплый дуб»<br><small>Реальный проект Woodlife</small></p></div>
       </div>
       <a class="scroll-cue" href="#manifest"><span>Листайте</span><i></i></a>
     </section>
@@ -88,24 +88,26 @@
           <button type="button" data-filter="kitchen">Кухни</button>
           <button type="button" data-filter="wardrobe">Гардеробные</button>
           <button type="button" data-filter="storage">Хранение</button>
+          <button type="button" data-filter="commercial">Для бизнеса</button>
         </div>
       </div>
+      <div class="real-work-note"><span>✓</span><p><strong>Только реальные работы Woodlife.</strong> Без каталогов, рендеров и чужих интерьеров.</p><a href="https://t.me/Woodlife164" target="_blank" rel="noreferrer">Смотреть канал ↗</a></div>
       <div class="project-grid">
-        <article class="project-card project-main reveal" data-category="kitchen">
+        <article class="project-card project-main reveal" data-category="kitchen" data-project="kitchen">
           <div class="project-image p1"><span>Смотреть проект ↗</span></div>
-          <div class="project-meta"><h3>Тихий графит</h3><p>Кухня · AGT и Kronospan</p><em>01</em></div>
+          <div class="project-meta"><h3>Графит и тёплый дуб</h3><p>Кухня · фасады AGT и Kronospan</p><em>01</em></div>
         </article>
-        <article class="project-card reveal" data-category="wardrobe">
+        <article class="project-card reveal" data-category="wardrobe" data-project="white">
           <div class="project-image p2"><span>Смотреть проект ↗</span></div>
           <div class="project-meta"><h3>Белая галактика</h3><p>Встроенный гардероб · AGT</p><em>02</em></div>
         </article>
-        <article class="project-card reveal" data-category="storage">
+        <article class="project-card reveal" data-category="storage" data-project="bathroom">
           <div class="project-image p3"><span>Смотреть проект ↗</span></div>
-          <div class="project-meta"><h3>Графитовая ниша</h3><p>Система хранения · Egger</p><em>03</em></div>
+          <div class="project-meta"><h3>Идеальная ниша</h3><p>Шкаф-пенал · Egger и Firmax</p><em>03</em></div>
         </article>
-        <article class="project-card project-wide reveal" data-category="kitchen">
+        <article class="project-card project-wide reveal" data-category="commercial" data-project="commercial">
           <div class="project-image p4"><span>Смотреть проект ↗</span></div>
-          <div class="project-meta"><h3>Линия света</h3><p>Кухня-гостиная · шпон и эмаль</p><em>04</em></div>
+          <div class="project-meta"><h3>«Прохук» за 14 дней</h3><p>Торговое оборудование · полный цикл</p><em>04</em></div>
         </article>
       </div>
     </section>
@@ -182,6 +184,21 @@
     </div>
     <div class="footer-bottom"><span>© 2026 Woodlife</span><span>Мебель под заказ · Саратов</span><a href="#">Политика конфиденциальности</a></div>
   </footer>
+
+  <dialog class="modal project-modal" id="project-modal">
+    <button class="modal-close" type="button" data-close aria-label="Закрыть">×</button>
+    <div class="project-viewer">
+      <div class="project-viewer-image"><img id="project-main-image" alt=""><button type="button" data-gallery-prev aria-label="Предыдущее фото">←</button><button type="button" data-gallery-next aria-label="Следующее фото">→</button><span id="project-gallery-count"></span></div>
+      <div class="project-viewer-copy">
+        <p class="eyebrow" id="project-kicker"></p>
+        <h2 id="project-modal-title"></h2>
+        <p id="project-modal-text"></p>
+        <dl id="project-modal-details"></dl>
+        <div class="project-thumbs" id="project-thumbs"></div>
+        <a class="primary-button" id="project-telegram-link" href="https://t.me/Woodlife164" target="_blank" rel="noreferrer">Хочу похожий проект <span>↗</span></a>
+      </div>
+    </div>
+  </dialog>
 
   <dialog class="modal brief-modal" id="brief-modal">
     <button class="modal-close" type="button" data-close aria-label="Закрыть">×</button>
